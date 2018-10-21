@@ -1,0 +1,14 @@
+{
+  "name": "poin",
+  "version": "1.0.0",
+  "description": "Poll the state of the pointer",
+  "main": "index.js",
+  "license": "MIT",
+  "contributors": [
+    "Andrew McPherson <@ehgoodenough>"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ehgoodenough/poin"
+  }
+}
