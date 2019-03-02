@@ -22,14 +22,18 @@ document.addEventListener("pointermove", function(event) {
     cursor.position.x = event.clientX
     cursor.position.y = event.clientY
 
-    let element = cursor.element || document.body
-    let bounds = element.getBoundingClientRect()
+    cursor.element = document.getElementById(cursor.element) || cursor.element
+    cursor.element = cursor.element || document.body
+    
+    if(cursor.element instanceof HTMLElement) {
+        let bounds = cursor.element.getBoundingClientRect()
 
-    cursor.position.x -= bounds.x
-    cursor.position.y -= bounds.y
+        cursor.position.x -= bounds.x
+        cursor.position.y -= bounds.y
 
-    cursor.position.x /= bounds.width
-    cursor.position.y /= bounds.height
+        cursor.position.x /= bounds.width
+        cursor.position.y /= bounds.height
+    }
 
     // x = Math.max(0, Math.min(1, x))
     // y = Math.max(0, Math.min(1, y))
