@@ -4,14 +4,14 @@ const cursor = {
     },
     "wasJustPressed": function(delta) {
         delta = delta || (1000 / 60)
-        return Date.now() - this.pressed < delta
+        return window.performance.now() - this.pressed < delta
     },
     "position": {"x": 0, "y": 0},
     "pressed": undefined,
 }
 
 document.addEventListener("pointerdown", function(event) {
-    cursor.pressed = Date.now()
+    cursor.pressed = window.performance.now()
 })
 
 document.addEventListener("pointerup", function(event) {
@@ -24,7 +24,7 @@ document.addEventListener("pointermove", function(event) {
 
     cursor.element = document.getElementById(cursor.element) || cursor.element
     cursor.element = cursor.element || document.body
-    
+
     if(cursor.element instanceof HTMLElement) {
         let bounds = cursor.element.getBoundingClientRect()
 
@@ -34,7 +34,7 @@ document.addEventListener("pointermove", function(event) {
         cursor.position.x /= bounds.width
         cursor.position.y /= bounds.height
     }
-
+    
     // x = Math.max(0, Math.min(1, x))
     // y = Math.max(0, Math.min(1, y))
 
