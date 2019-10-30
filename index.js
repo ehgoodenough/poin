@@ -10,15 +10,15 @@ const cursor = {
     "pressed": undefined,
 }
 
-document.addEventListener("pointerdown", function(event) {
+document.addEventListener("mousedown", function(event) {
     cursor.pressed = window.performance.now()
 })
 
-document.addEventListener("pointerup", function(event) {
+document.addEventListener("mouseup", function(event) {
     cursor.pressed = undefined
 })
 
-document.addEventListener("pointermove", function(event) {
+document.addEventListener("mousemove", function(event) {
     cursor.position.x = event.clientX
     cursor.position.y = event.clientY
 
@@ -28,13 +28,13 @@ document.addEventListener("pointermove", function(event) {
     if(cursor.element instanceof HTMLElement) {
         let bounds = cursor.element.getBoundingClientRect()
 
-        cursor.position.x -= bounds.x
-        cursor.position.y -= bounds.y
+        cursor.position.x -= bounds.left
+        cursor.position.y -= bounds.top
 
         cursor.position.x /= bounds.width
         cursor.position.y /= bounds.height
     }
-    
+
     // x = Math.max(0, Math.min(1, x))
     // y = Math.max(0, Math.min(1, y))
 
