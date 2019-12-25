@@ -1,7 +1,7 @@
 const BUTTON_NAMES = {
     "primary": 0, // usually left button
     "secondary": 2, // usually right button
-    "auxilary": 1, // usually mouse wheel middle button
+    "auxiliary": 1, // usually mouse wheel middle button
 }
 
 const Poin = {
