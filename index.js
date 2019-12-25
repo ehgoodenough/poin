@@ -1,48 +1,46 @@
-const cursor = {
-    "isPressed": function() {
-        return this.pressed !== undefined
-    },
-    "wasJustPressed": function(delta) {
-        delta = delta || (1000 / 60)
-        return window.performance.now() - this.pressed < delta
-    },
-    "position": {"x": 0, "y": 0},
-    "pressed": undefined,
+const BUTTON_NAMES = {
+    "primary": 0, // usually left button
+    "secondary": 2, // usually right button
+    "auxilary": 1, // usually mouse wheel middle button
 }
 
-document.addEventListener("mousedown", function(event) {
-    cursor.pressed = window.performance.now()
-})
+const Poin = {
+    "position": {"x": 0, "y": 0},
+    "pressed": {0: undefined, 1: undefined, 2: undefined},
+    "isPressed": function(button = "primary") {
+        return (this.pressed[button] || this.pressed[BUTTON_NAMES[button]]) != undefined
+    },
+    "wasJustPressed": function(button = "primary", delta = 1000/60) {
+        const pressed = this.pressed[button] || this.pressed[BUTTON_NAMES[button]]
+        return window.performance.now() - pressed < delta
+    },
+    "setPressed": function(button, isPressed) {
+        if(isPressed == true) {
+            this.pressed[button] = window.performance.now()
+        } else if(isPressed == false) {
+            this.pressed[button] = undefined
+        }
+    },
+    "setPosition": function(position) {
+        this.position.x = position.x
+        this.position.y = position.y
+    },
+}
 
-document.addEventListener("mouseup", function(event) {
-    cursor.pressed = undefined
-})
+document.addEventListener("mousedown", (event) => Poin.setPressed(event.button, true))
+document.addEventListener("mouseup", (event) => Poin.setPressed(event.button, false))
+document.addEventListener("mousemove", (event) => Poin.setPosition({"x": event.clientX, "y": event.clientY}))
+document.addEventListener("pointerdown", (event) => Poin.setPressed(event.button || 0, true))
+document.addEventListener("pointerup", (event) => Poin.setPressed(event.button || 0, false))
+document.addEventListener("pointermove", (event) => Poin.setPosition({"x": event.clientX, "y": event.clientY}))
+document.addEventListener("touchdown", (event) => Poin.setPressed(event.button || 0, true))
+document.addEventListener("touchup", (event) => Poin.setPressed(event.button || 0, false))
+document.addEventListener("touchmove", (event) => Poin.setPosition({"x": event.touches[0].clientX, "y": event.touches[0].clientY}))
 
-document.addEventListener("mousemove", function(event) {
-    cursor.position.x = event.clientX
-    cursor.position.y = event.clientY
-
-    cursor.element = document.getElementById(cursor.element) || cursor.element
-    cursor.element = cursor.element || document.body
-
-    if(cursor.element instanceof HTMLElement) {
-        let bounds = cursor.element.getBoundingClientRect()
-
-        cursor.position.x -= bounds.left
-        cursor.position.y -= bounds.top
-
-        cursor.position.x /= bounds.width
-        cursor.position.y /= bounds.height
+document.addEventListener("contextmenu", (event) => {
+    if(Poin.isIgnoringContextMenu == true) {
+        event.preventDefault()
     }
-
-    // x = Math.max(0, Math.min(1, x))
-    // y = Math.max(0, Math.min(1, y))
-
-    // x *= 16
-    // y *= 9
-
-    // x = Math.round(x * 16)
-    // y = Math.round(y * 9)
 })
 
-module.exports = cursor
+module.exports = Poin
