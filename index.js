@@ -33,8 +33,8 @@ document.addEventListener("mousemove", (event) => Poin.setPosition({"x": event.c
 document.addEventListener("pointerdown", (event) => Poin.setPressed(event.button || 0, true))
 document.addEventListener("pointerup", (event) => Poin.setPressed(event.button || 0, false))
 document.addEventListener("pointermove", (event) => Poin.setPosition({"x": event.clientX, "y": event.clientY}))
-document.addEventListener("touchdown", (event) => Poin.setPressed(event.button || 0, true))
-document.addEventListener("touchup", (event) => Poin.setPressed(event.button || 0, false))
+document.addEventListener("touchstart", (event) => Poin.setPressed(event.button || 0, true))
+document.addEventListener("touchend", (event) => Poin.setPressed(event.button || 0, false))
 document.addEventListener("touchmove", (event) => Poin.setPosition({"x": event.touches[0].clientX, "y": event.touches[0].clientY}))
 
 document.addEventListener("contextmenu", (event) => {
