@@ -33,12 +33,21 @@ document.addEventListener("mousemove", (event) => Poin.setPosition({"x": event.c
 document.addEventListener("pointerdown", (event) => Poin.setPressed(event.button || 0, true))
 document.addEventListener("pointerup", (event) => Poin.setPressed(event.button || 0, false))
 document.addEventListener("pointermove", (event) => Poin.setPosition({"x": event.clientX, "y": event.clientY}))
-document.addEventListener("touchstart", (event) => Poin.setPressed(event.button || 0, true))
-document.addEventListener("touchend", (event) => Poin.setPressed(event.button || 0, false))
+document.addEventListener("touchstart", (event) => Poin.setPressed(0, true))
+document.addEventListener("touchend", (event) => Poin.setPressed(0, false))
+document.addEventListener("touchstart", (event) => Poin.setPosition({"x": event.touches[0].clientX, "y": event.touches[0].clientY}))
+document.addEventListener("touchend", (event) => Poin.setPosition({"x": event.touches[0].clientX, "y": event.touches[0].clientY}))
 document.addEventListener("touchmove", (event) => Poin.setPosition({"x": event.touches[0].clientX, "y": event.touches[0].clientY}))
 
 document.addEventListener("contextmenu", (event) => {
     if(Poin.isIgnoringContextMenu == true) {
+        event.preventDefault()
+    }
+})
+
+// https://stackoverflow.com/questions/38373684/how-do-i-stop-ios-chrome-from-dimming-on-touching-a-canvas
+document.addEventListener("touchstart", function(event) {
+    if(Poin.isIgnoringTouchHover == true) {
         event.preventDefault()
     }
 })
