@@ -8,17 +8,23 @@ const Poin = {
     "position": {"x": 0, "y": 0},
     "pressed": {0: undefined, 1: undefined, 2: undefined},
     "isPressed": function(button = "primary") {
-        return (this.pressed[button] || this.pressed[BUTTON_NAMES[button]]) != undefined
+        const pressed = this.getPressed(button)
+        if(pressed == undefined) return false
+        return pressed.state
     },
-    "wasJustPressed": function(button = "primary", delta = 1000/60) {
-        const pressed = this.pressed[button] || this.pressed[BUTTON_NAMES[button]]
-        return window.performance.now() - pressed < delta
+    "wasJustPressed": function(button = "primary", state = true, delta = 1000/60) {
+        const pressed = this.getPressed(button)
+        if(pressed == undefined) return false
+        return window.performance.now() - pressed.time < delta
+            && pressed.state == state
     },
-    "setPressed": function(button, isPressed) {
-        if(isPressed == true) {
-            this.pressed[button] = window.performance.now()
-        } else if(isPressed == false) {
-            this.pressed[button] = undefined
+    "getPressed": function(button) {
+        return this.pressed[button] || this.pressed[BUTTON_NAMES[button]]
+    },
+    "setPressed": function(button, state) {
+        this.pressed[button] = {
+            "time": window.performance.now(),
+            "state": state
         }
     },
     "setPosition": function(position) {
@@ -45,9 +51,8 @@ document.addEventListener("contextmenu", (event) => {
     }
 })
 
-// https://stackoverflow.com/questions/38373684/how-do-i-stop-ios-chrome-from-dimming-on-touching-a-canvas
-document.addEventListener("touchstart", function(event) {
-    if(Poin.isIgnoringTouchHover == true) {
+document.addEventListener("touchstart", (event) => {
+    if(Poin.isIgnoringTouchHover) {
         event.preventDefault()
     }
 })
