@@ -1,6 +1,6 @@
 {
   "name": "poin",
-  "version": "2.1.2",
+  "version": "2.2.0",
   "description": "Poll the state of the pointer.",
   "main": "index.js",
   "license": "MIT",
