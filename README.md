@@ -4,19 +4,18 @@ A javascript utility for polling the state of the pointer (be it mouse or touch)
 
 ### Usage ###
 
-For any given frame of your game loop, you can poll the position of the pointer (be it mouse or touch) using `Poin.position`:
+You can poll the position of the pointer using `Poin.position`. This works for both the mouse pointer and the touch screen pointer.
 
 ```js
 player.position.x = Poin.position.x
 player.position.y = Poin.position.y
 ```
 
-You can poll the state of a press (be it a click of the mouse or touch of the screen) using `Poin.wasJustPressed()`:
+You can poll the state of a press using `Poin.wasJustPressed(buttonNumber)`. For `buttonNumber`, you can also use button names like `primary` for 0 or `secondary` for 2. If you don't put any button number or button name, it defaults to 0.
 
 ```js
-if(Poin.wasJustPressed()) {
-    player.shootGun()
-}
+if(Poin.wasJustPressed("primary")) player.shoot()
+if(Poin.wasJustPressed("secondary")) player.reload()
 ```
 
 ### License ###
