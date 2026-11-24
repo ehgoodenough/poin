@@ -4,6 +4,9 @@ const BUTTON_NAMES = {
     "auxiliary": 1, // usually mouse wheel middle button
 }
 
+const hasWindow = typeof window !== "undefined"
+const hasDocument = typeof document !== "undefined"
+
 const Poin = {
     "position": {"x": 0, "y": 0},
     "pressed": {0: undefined, 1: undefined, 2: undefined},
@@ -15,7 +18,7 @@ const Poin = {
     "wasJustPressed": function(button = "primary", state = true, delta = 1000/60) {
         const pressed = this.getPressed(button)
         if(pressed == undefined) return false
-        return window.performance.now() - pressed.time < delta
+        return (hasWindow ? window.performance.now() : 0) - pressed.time < delta
             && pressed.state == state
     },
     "getPressed": function(button) {
@@ -23,7 +26,7 @@ const Poin = {
     },
     "setPressed": function(button, state) {
         this.pressed[button] = {
-            "time": window.performance.now(),
+            "time": hasWindow ? window.performance.now() : 0,
             "state": state
         }
     },
@@ -48,16 +51,17 @@ const Poin = {
     }
 }
 
-document.addEventListener("contextmenu", (event) => {
-    if(Poin.isIgnoringContextMenu == true) {
-        event.preventDefault()
-    }
-})
-
-document.addEventListener("touchstart", (event) => {
-    if(Poin.isIgnoringTouchHover) {
-        event.preventDefault()
-    }
-})
+if(hasDocument) {
+    document.addEventListener("contextmenu", (event) => {
+        if(Poin.isIgnoringContextMenu == true) {
+            event.preventDefault()
+        }
+    })
+    document.addEventListener("touchstart", (event) => {
+        if(Poin.isIgnoringTouchHover) {
+            event.preventDefault()
+        }
+    })
+}
 
 module.exports = Poin
